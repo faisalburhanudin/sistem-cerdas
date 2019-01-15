@@ -13,7 +13,7 @@ clf = joblib.load(os.path.join(current_dir, "svm.pkl"))
 
 
 class Config(object):
-    SQLALCHEMY_DATABASE_URI = getenv('SQLALCHEMY_DATABASE_URI', 'mysql://root:my-secret-pw@192.168.12.222/spam')
+    SQLALCHEMY_DATABASE_URI = getenv('SQLALCHEMY_DATABASE_URI', 'mysql://root:my-secret-pw@127.0.0.1/spam')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     LOG_CONFIG = {
