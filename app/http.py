@@ -81,4 +81,7 @@ def is_spam():
 
 @app.route('/processed')
 def processed_view():
-    return render_template('processed.html')
+    processes = Processed.query.order_by(
+        Processed.id.desc()
+    ).all()
+    return render_template('processed.html', processes=processes)
