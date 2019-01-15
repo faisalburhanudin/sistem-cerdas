@@ -81,7 +81,18 @@ def is_spam():
 
 @app.route('/processed')
 def processed_view():
-    processes = Processed.query.order_by(
+    page = request.args.get("page", "1")
+    per_page = request.args.get("per_page", "50")
+
+    page = int(page)
+    per_page = int(per_page)
+
+    pagination = Processed.query.order_by(
         Processed.id.desc()
-    ).all()
-    return render_template('processed.html', processes=processes)
+    ).paginate(
+        page=page,
+        per_page=per_page,
+        error_out=False
+    )
+
+    return render_template('processed.html', pagination=pagination)
