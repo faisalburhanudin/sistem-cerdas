@@ -1,7 +1,15 @@
+import os
 from os import getenv
 
-from flask import Flask, render_template
+from flask import Flask, render_template, jsonify, request
+from sklearn.externals import joblib
+
 from app.db import db
+
+current_dir = os.path.dirname(__file__)
+
+tfidf = joblib.load(os.path.join(current_dir, "tfidf.pkl"))
+clf = joblib.load(os.path.join(current_dir, "svm.pkl"))
 
 
 class Config(object):
@@ -47,3 +55,15 @@ db.init_app(app)
 @app.route('/')
 def root():
     return render_template('dashboard.html')
+
+
+@app.route('/api', methods=['POST'])
+def is_spam():
+    text = request.form.get("text")
+
+    transform = tfidf.transform((text,))
+    predict = clf.predict(transform)
+
+    return jsonify({
+        "is_spam": bool(predict[0] == 1)
+    })

@@ -1,7 +1,6 @@
-import os
-from sklearn.externals import joblib
 import logging
 
+import requests
 from telegram.ext import Updater, MessageHandler, Filters
 
 logging.basicConfig(level=logging.DEBUG,
@@ -9,16 +8,13 @@ logging.basicConfig(level=logging.DEBUG,
 
 updater = Updater(token='756768931:AAHk6rE0E7Es7j73lPHnUn51oSJKW9KrfQ0')
 
-current_dir = os.path.dirname(__file__)
-
-tfidf = joblib.load(os.path.join(current_dir, "tfidf.pkl"))
-clf = joblib.load(os.path.join(current_dir, "svm.pkl"))
-
 
 def is_spam(text):
-    transform = tfidf.transform((text,))
-    predict = clf.predict(transform)
-    return bool(predict[0] == 1)
+    response = requests.post('http://localhost:5000/api', data={
+        "text": text
+    })
+
+    return response.json()['is_spam']
 
 
 def spam_handler(bot, update):
