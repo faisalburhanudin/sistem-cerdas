@@ -1,7 +1,7 @@
 import os
 from os import getenv
 
-from flask import Flask, render_template, jsonify, request
+from flask import Flask, render_template, jsonify, request, redirect
 from sklearn.externals import joblib
 
 from app.db import db, Processed
@@ -96,3 +96,20 @@ def processed_view():
     )
 
     return render_template('processed.html', pagination=pagination)
+
+
+@app.route('/test-text', methods=['POST'])
+def test_text():
+    text = request.form.get("text")
+
+    transform = tfidf.transform((text,))
+    predict = clf.predict(transform)
+
+    predict = bool(predict[0] == 1)
+
+    label = 'spam' if predict else 'not spam'
+    processed = Processed(text, label)
+    db.session.add(processed)
+    db.session.commit()
+
+    return redirect('/processed')

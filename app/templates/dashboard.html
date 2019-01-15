@@ -10,98 +10,20 @@
     <div class="col-lg-6">
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Api Activity</h3>
+                <h3 class="card-title">Test Text</h3>
             </div>
-            <div id="chart-development-activity" style="height: 10rem"></div>
-            <div class="table-responsive">
-                <table class="table card-table table-striped table-vcenter">
-                    <thead>
-                    <tr>
-                        <th>Commit</th>
-                        <th>Date</th>
-                        <th></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td>Ronald Bradley</td>
-                        <td>Initial commit</td>
-                        <td class="text-nowrap">May 6, 2018</td>
-                        <td class="w-1"><a href="#" class="icon"><i class="fe fe-trash"></i></a></td>
-                    </tr>
-                    </tbody>
-                </table>
+            <div class="card-body">
+                <form action="/test-text" method="post">
+                    <div class="form-group">
+                        <label for="text">Text</label>
+                        <textarea name="text" class="form-control" id="text" rows="5"></textarea>
+                    </div>
+                    <div class="form-footer">
+                        <input type="submit" class="btn btn-primary btn-block" value="Test">
+                    </div>
+                </form>
             </div>
         </div>
-        <script>
-            require(['c3', 'jquery'], function (c3, $) {
-                $(document).ready(function () {
-                    var chart = c3.generate({
-                        bindto: '#chart-development-activity', // id of chart wrapper
-                        data: {
-                            columns: [
-                                // each columns data
-                                ['data1', 0, 5, 1, 2, 7, 5, 6, 8, 24, 7, 12, 5, 6, 3, 2, 2, 6, 30, 10, 10, 15, 14, 47, 65, 55]
-                            ],
-                            type: 'area', // default type of chart
-                            groups: [
-                                ['data1', 'data2', 'data3']
-                            ],
-                            colors: {
-                                'data1': tabler.colors["blue"]
-                            },
-                            names: {
-                                // name of each serie
-                                'data1': 'Purchases'
-                            }
-                        },
-                        axis: {
-                            y: {
-                                padding: {
-                                    bottom: 0,
-                                },
-                                show: false,
-                                tick: {
-                                    outer: false
-                                }
-                            },
-                            x: {
-                                padding: {
-                                    left: 0,
-                                    right: 0
-                                },
-                                show: false
-                            }
-                        },
-                        legend: {
-                            position: 'inset',
-                            padding: 0,
-                            inset: {
-                                anchor: 'top-left',
-                                x: 20,
-                                y: 8,
-                                step: 10
-                            }
-                        },
-                        tooltip: {
-                            format: {
-                                title: function (x) {
-                                    return '';
-                                }
-                            }
-                        },
-                        padding: {
-                            bottom: 0,
-                            left: -1,
-                            right: -1
-                        },
-                        point: {
-                            show: false
-                        }
-                    });
-                });
-            });
-        </script>
     </div>
     <div class="col-md-6">
         <div class="row">
