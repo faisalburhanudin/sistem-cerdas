@@ -4,7 +4,7 @@ from os import getenv
 from flask import Flask, render_template, jsonify, request
 from sklearn.externals import joblib
 
-from app.db import db
+from app.db import db, Processed
 
 current_dir = os.path.dirname(__file__)
 
@@ -49,6 +49,9 @@ class Config(object):
 
 
 app = Flask(__name__)
+
+app.config.from_object(Config)
+
 db.init_app(app)
 
 
@@ -64,6 +67,18 @@ def is_spam():
     transform = tfidf.transform((text,))
     predict = clf.predict(transform)
 
+    predict = bool(predict[0] == 1)
+
+    label = 'spam' if predict else 'not spam'
+    processed = Processed(text, label)
+    db.session.add(processed)
+    db.session.commit()
+
     return jsonify({
-        "is_spam": bool(predict[0] == 1)
+        "is_spam": predict
     })
+
+
+@app.route('/processed')
+def processed_view():
+    return render_template('processed.html')
